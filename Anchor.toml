@@ -12,7 +12,7 @@ time_locked_wallet = "3fVTx7kcagpyJnJ6Dz4zEC6EBx7LzQhmhwBU1ekVSKxV"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]

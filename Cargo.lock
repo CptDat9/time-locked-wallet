@@ -2604,7 +2604,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "time-locked-wallet"
+name = "time_locked_wallet"
 version = "0.1.0"
 dependencies = [
  "anchor-lang",
