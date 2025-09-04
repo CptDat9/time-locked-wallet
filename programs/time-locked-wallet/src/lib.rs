@@ -7,7 +7,7 @@ pub use state::*;
 pub use instructions::*;
 mod constant;
 mod error;
-declare_id!("3fVTx7kcagpyJnJ6Dz4zEC6EBx7LzQhmhwBU1ekVSKxV");
+declare_id!("DJoq887gWARUoPt8fuQikwDYe1f8jTbJ3PmWrxZ9fj2Y");
 
 #[program]
 pub mod time_locked_wallet {
@@ -39,6 +39,3 @@ pub mod time_locked_wallet {
         WithdrawSol::process(ctx)
     }
 }
-
-#[derive(Accounts)]
-pub struct Initialize {}

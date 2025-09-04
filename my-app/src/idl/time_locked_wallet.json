@@ -1,0 +1,529 @@
+{
+  "address": "DJoq887gWARUoPt8fuQikwDYe1f8jTbJ3PmWrxZ9fj2Y",
+  "metadata": {
+    "name": "time_locked_wallet",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "initialize_lock_sol",
+      "discriminator": [
+        34,
+        34,
+        4,
+        174,
+        89,
+        54,
+        54,
+        8
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "lock_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "payer"
+              },
+              {
+                "kind": "arg",
+                "path": "unlock_timestamp"
+              }
+            ]
+          }
+        },
+        {
+          "name": "beneficiary"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "unlock_timestamp",
+          "type": "i64"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "initialize_lock_spl",
+      "discriminator": [
+        22,
+        210,
+        180,
+        61,
+        49,
+        142,
+        45,
+        32
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "lock_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "payer"
+              },
+              {
+                "kind": "arg",
+                "path": "unlock_timestamp"
+              }
+            ]
+          }
+        },
+        {
+          "name": "beneficiary"
+        },
+        {
+          "name": "payer_ata",
+          "writable": true
+        },
+        {
+          "name": "lock_ata",
+          "writable": true
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "unlock_timestamp",
+          "type": "i64"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "withdraw_sol",
+      "discriminator": [
+        145,
+        131,
+        74,
+        136,
+        65,
+        137,
+        42,
+        38
+      ],
+      "accounts": [
+        {
+          "name": "lock_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "lock_account.owner",
+                "account": "LockAccount"
+              },
+              {
+                "kind": "account",
+                "path": "lock_account.unlock_timestamp",
+                "account": "LockAccount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "beneficiary",
+          "writable": true
+        },
+        {
+          "name": "signer",
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "withdraw_spl",
+      "discriminator": [
+        181,
+        154,
+        94,
+        86,
+        62,
+        115,
+        6,
+        186
+      ],
+      "accounts": [
+        {
+          "name": "lock_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "lock_account.owner",
+                "account": "LockAccount"
+              },
+              {
+                "kind": "account",
+                "path": "lock_account.unlock_timestamp",
+                "account": "LockAccount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "beneficiary",
+          "writable": true
+        },
+        {
+          "name": "signer",
+          "signer": true
+        },
+        {
+          "name": "beneficiary_ata",
+          "writable": true
+        },
+        {
+          "name": "lock_ata",
+          "writable": true
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "LockAccount",
+      "discriminator": [
+        223,
+        64,
+        71,
+        124,
+        255,
+        86,
+        118,
+        192
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "FundsLocked",
+      "discriminator": [
+        227,
+        93,
+        162,
+        69,
+        181,
+        4,
+        71,
+        157
+      ]
+    },
+    {
+      "name": "FundsWithdrawn",
+      "discriminator": [
+        56,
+        130,
+        230,
+        154,
+        35,
+        92,
+        11,
+        118
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "Unauthorized",
+      "msg": "Unauthorized: Only the owner can perform this action."
+    },
+    {
+      "code": 6001,
+      "name": "InvalidReleaseTime",
+      "msg": "The release time must be in the future."
+    },
+    {
+      "code": 6002,
+      "name": "NothingToWithdraw",
+      "msg": "No funds available for withdrawal yet."
+    },
+    {
+      "code": 6003,
+      "name": "FundsLocked",
+      "msg": "Funds are still locked."
+    },
+    {
+      "code": 6004,
+      "name": "InsufficientBalance",
+      "msg": "Insufficient balance."
+    },
+    {
+      "code": 6005,
+      "name": "DepositNotFound",
+      "msg": "Deposit record not found."
+    },
+    {
+      "code": 6006,
+      "name": "AlreadyWithdrawn",
+      "msg": "This deposit has already been withdrawn."
+    },
+    {
+      "code": 6007,
+      "name": "InvalidDescription",
+      "msg": "Invalid description."
+    }
+  ],
+  "types": [
+    {
+      "name": "FundsLocked",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "lock_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "beneficiary",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "unlock_timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "FundsWithdrawn",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "lock_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "beneficiary",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LockAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "docs": [
+              "Người gửi"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "beneficiary",
+            "docs": [
+              "Người thụ hưởng"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "docs": [
+              "Mint token nếu là SPL (None = SOL)"
+            ],
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "amount",
+            "docs": [
+              "Số lượng token/SOL lock"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "unlock_timestamp",
+            "docs": [
+              "Thời gian unlock (timestamp)"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "description",
+            "docs": [
+              "Metadata: lý do gửi tiền"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "withdrawn",
+            "docs": [
+              "Đánh dấu đã rút chưa"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "Bump PDA"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "constants": [
+    {
+      "name": "BENEFICIARY_SEED",
+      "type": "bytes",
+      "value": "[98, 101, 110, 101, 102, 105, 99, 105, 97, 114, 121]"
+    },
+    {
+      "name": "DEPOSIT_RECORD_SEED",
+      "type": "bytes",
+      "value": "[100, 101, 112, 111, 115, 105, 116, 95, 114, 101, 99, 111, 114, 100]"
+    },
+    {
+      "name": "VAULT_SEED",
+      "type": "bytes",
+      "value": "[118, 97, 117, 108, 116]"
+    }
+  ]
+}

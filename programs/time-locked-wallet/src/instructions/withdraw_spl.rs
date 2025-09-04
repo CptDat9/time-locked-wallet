@@ -5,12 +5,14 @@ use anchor_spl::{
 };
 
 use crate::{state::*, error::AppError, events::FundsWithdrawn};
-
+use crate::{
+    constant::{VAULT_SEED, DEPOSIT_RECORD_SEED, BENEFICIARY_SEED, MAX_DESCRIPTION_LENGTH} 
+};
 #[derive(Accounts)]
 pub struct WithdrawSpl<'info> {
     #[account(
         mut,
-        seeds = [b"lock", lock_account.owner.as_ref(), lock_account.unlock_timestamp.to_le_bytes().as_ref()],
+        seeds = [VAULT_SEED, lock_account.owner.as_ref(), lock_account.unlock_timestamp.to_le_bytes().as_ref()],
         bump = lock_account.bump,
         close = beneficiary
     )]

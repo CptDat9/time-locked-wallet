@@ -4,8 +4,10 @@ use anchor_spl::{
     token::{self, Mint, Token, TokenAccount, Transfer},
 };
 
-use crate::{state::*, error::AppError, constant::MAX_DESCRIPTION_LENGTH, events::FundsLocked};
-
+use crate::{state::*, error::AppError, events::FundsLocked};
+use crate::{
+    constant::{VAULT_SEED, DEPOSIT_RECORD_SEED, BENEFICIARY_SEED, MAX_DESCRIPTION_LENGTH} 
+};
 #[derive(Accounts)]
 #[instruction(unlock_timestamp: i64)]
 pub struct InitializeLockSpl<'info> {
@@ -16,7 +18,7 @@ pub struct InitializeLockSpl<'info> {
         init,
         payer = payer,
         space = LOCK_ACCOUNT_SIZE,
-        seeds = [b"lock", payer.key().as_ref(), unlock_timestamp.to_le_bytes().as_ref()],
+        seeds = [VAULT_SEED, payer.key().as_ref(), unlock_timestamp.to_le_bytes().as_ref()],
         bump
     )]
     pub lock_account: Account<'info, LockAccount>,
