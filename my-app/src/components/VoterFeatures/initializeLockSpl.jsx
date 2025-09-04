@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Input, Button, VStack, useToast, Heading, Box } from "@chakra-ui/react";
-const ClaimReward = () => {
+import { Buffer } from "buffer";
+
+const InitializeLockSpl = () => {
 };
-export default ClaimReward;
+export default InitializeLockSpl;

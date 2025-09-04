@@ -45,7 +45,7 @@ function Navbar() {
               color: "teal.200",
             }}
           >
-            by A-Squad Team - Solana Training Camp
+            by CptDat9
           </ChakraLink>
          
         </Flex>

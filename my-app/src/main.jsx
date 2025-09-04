@@ -4,10 +4,17 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import LoginPage from './pages/LoginPage';
-import AdminPage from './pages/AdminPage';
 import VoterPage from './pages/VoterPage';
-import { Buffer } from 'buffer';
-window.Buffer = Buffer;
+import { Buffer } from "buffer";
+import process from "process";
+
+if (typeof globalThis.Buffer === "undefined") {
+  globalThis.Buffer = Buffer;
+}
+
+if (typeof globalThis.process === "undefined") {
+  globalThis.process = process;
+}
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -15,7 +22,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Router>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/admin" element={<AdminPage />} />
           <Route path="/voter" element={<VoterPage />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

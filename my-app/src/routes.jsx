@@ -1,6 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
-import AdminPage from "./pages/AdminPage";
 import VoterPage from "./pages/VoterPage";
 
 function AppRoutes() {
@@ -8,8 +7,8 @@ function AppRoutes() {
     <Router>
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/admin" element={<AdminPage />} />
         <Route path="/voter" element={<VoterPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

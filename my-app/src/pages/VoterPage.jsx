@@ -9,10 +9,10 @@ const VoterPage = () => {
   const [currentFeature, setCurrentFeature] = useState(null);
 
   const features = [
-    { id: "createSOLWallet", label: "VOTE FOR QUEST", icon: <FaVoteYea /> },
-    { id: "createSPLWallet", label: "CLAIM REWARD", icon: <FaVoteYea /> },
-    { id: "withdrawSOLWALLET", label: "VIEW QUEST DETAILS", icon: <FaInfoCircle /> },
-    { id: "withdrawSPLWALLET", label: "VIEW QUEST DETAILS", icon: <FaInfoCircle /> },
+    { id: "initializeLockSol", label: "CREATE SOL WALLET", icon: <FaVoteYea /> },
+    { id: "initializeLockSpl", label: "CREATE SPL WALLET", icon: <FaVoteYea /> },
+    { id: "withdrawSol", label: "WITHDRAW SOL", icon: <FaInfoCircle /> },
+    { id: "withdrawSpl", label: "WITHDRAW SPL", icon: <FaInfoCircle /> },
 
   ];
 

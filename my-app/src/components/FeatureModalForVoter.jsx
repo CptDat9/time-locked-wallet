@@ -1,18 +1,21 @@
 import React from "react";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton} from "@chakra-ui/react";
-import VoteQuestion from "./VoterFeatures/VoteQuestion";
-import ClaimReward from "./VoterFeatures/ClaimReward";
-import ViewQuestion from "./VoterFeatures/ViewQuestion";
+import InitializeLockSol from "./VoterFeatures/initializeLockSol";
+import InitializeLockSpl from "./VoterFeatures/initializeLockSpl";
+import WithdrawSol from "./VoterFeatures/withdrawSol";
+import WithdrawSpl from "./VoterFeatures/withdrawSpl";
 
 const FeatureModalForVoter = ({ featureId, onClose }) => {
   const renderFeatureContent = () => {
     switch (featureId) {
-      case "voteQuestion":
-        return <VoteQuestion />;
-      case "claimReward":
-        return <ClaimReward />;
-      case "viewQuestion":
-        return <ViewQuestion />;
+      case "initializeLockSol":
+        return <InitializeLockSol />;
+      case "initializeLockSpl":
+        return <InitializeLockSpl />;
+      case "withdrawSol":
+        return <WithdrawSol />;
+      case "withdrawSpl":
+        return <WithdrawSpl />;
       default:
         return <p>Unknown feature.</p>;
     }

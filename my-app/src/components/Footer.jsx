@@ -12,7 +12,7 @@ function Footer() {
       borderTop="1px solid #e0e0e0"
     >
       <Text>
-        &copy; 2025 AIDAO Nexus. Powered by  A-Squad
+        &copy; 2025 Time Locked Wallet - TRUST AND SAFE. Powered by  CptDat9
       </Text>
     </Box>
   );
