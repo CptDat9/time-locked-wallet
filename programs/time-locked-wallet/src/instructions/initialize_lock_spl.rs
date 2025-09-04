@@ -9,7 +9,7 @@ use crate::{
     constant::{VAULT_SEED, DEPOSIT_RECORD_SEED, BENEFICIARY_SEED, MAX_DESCRIPTION_LENGTH} 
 };
 #[derive(Accounts)]
-#[instruction(unlock_timestamp: i64)]
+#[instruction(amount: u64, unlock_timestamp: i64, description: String)]
 pub struct InitializeLockSpl<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
