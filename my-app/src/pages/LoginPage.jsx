@@ -36,7 +36,6 @@ function LoginPage() {
       setCurrentAccount(publicKey);
       accountAddress = publicKey;
 
-      // 👉 Sau khi login thành công, điều hướng tới voter page
       navigate("/voter");
     } catch (err) {
       console.error("Error connecting to Phantom:", err);

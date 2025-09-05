@@ -3,7 +3,7 @@ import { Connection, PublicKey, SystemProgram, LAMPORTS_PER_SOL } from "@solana/
 import { Program, AnchorProvider } from "@coral-xyz/anchor";
 import idl from "../idl/time_locked_wallet.json" with { type: "json" };
 import BN from "bn.js";
-import type { Buffer } from "buffer";
+import { Buffer } from "buffer";
 
 function getLockAccountPDA(payer, unlockTimestamp, programId) {
   const unlockTimestampBN = new BN(unlockTimestamp);
