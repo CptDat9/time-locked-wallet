@@ -1,30 +1,23 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
-import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill";
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      buffer: "buffer",
-      stream: "stream-browserify",
-      util: "util",
-      process: "process/browser",
+      buffer: "buffer", // alias cho buffer
+      process: "process/browser", // một số lib Solana cũng gọi process.env
     },
   },
-  optimizeDeps: {
-    esbuildOptions: {
-      define: {
-        global: "globalThis",
-      },
-      plugins: [
-        NodeGlobalsPolyfillPlugin({
-          buffer: true,
-          process: true,
-        }),
-        NodeModulesPolyfillPlugin(),
-      ],
-    },
+  define: {
+    "process.env": {}, // tránh lỗi process
+  },
+   optimizeDeps: {
+    include: [
+      "buffer",
+      "@solana/web3.js",
+      "@solana/spl-token",
+      "@solana/spl-token-metadata"
+    ],
   },
 });

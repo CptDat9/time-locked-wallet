@@ -4,7 +4,6 @@ import { Program, AnchorProvider } from "@coral-xyz/anchor";
 import idl from "../idl/time_locked_wallet.json" with { type: "json" };
 import BN from "bn.js";
 import { Buffer } from "buffer";
-
 function getLockAccountPDA(payer, unlockTimestamp, programId) {
   const unlockTimestampBN = new BN(unlockTimestamp);
   const [pda] = PublicKey.findProgramAddressSync(
