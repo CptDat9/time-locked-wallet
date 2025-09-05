@@ -68,7 +68,7 @@ const VoterPage = () => {
             fontWeight="extrabold"
             textAlign="center"
           >
-            
+            SolSafeWallet - Trust and Safe
           </Heading>
         </Box>
 

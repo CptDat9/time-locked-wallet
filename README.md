@@ -112,7 +112,9 @@ cd time-locked-wallet
 
 <img width="416" height="447" alt="image" src="https://github.com/user-attachments/assets/9b5f8c2d-d621-45de-affd-828fa1fe5fdb" />
 
+![alt text](image-6.png)
 
+![alt text](image-7.png)
 
 - Test:
 
