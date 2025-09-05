@@ -68,7 +68,7 @@ const VoterPage = () => {
             fontWeight="extrabold"
             textAlign="center"
           >
-            Voter Features
+            
           </Heading>
         </Box>
 
