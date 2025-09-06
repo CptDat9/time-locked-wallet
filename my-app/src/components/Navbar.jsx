@@ -32,7 +32,8 @@ function Navbar() {
         }}
         transition="all 0.3s ease-in-out"
       >
-         AIDAO Nexus
+         SolSafeWallet - Trust and Safe
+
       </ChakraLink>
         <Flex gap={4}>
           <ChakraLink

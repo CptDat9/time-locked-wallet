@@ -1,9 +1,10 @@
-import { Connection, PublicKey, SystemProgram } from "@solana/web3.js";
+import { Connection, PublicKey, SystemProgram, Transaction} from "@solana/web3.js";
 import { Program, AnchorProvider } from "@coral-xyz/anchor";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   TOKEN_PROGRAM_ID,
   getAssociatedTokenAddressSync,
+  createAssociatedTokenAccountInstruction,
 } from "@solana/spl-token";
 import idl from "../idl/time_locked_wallet.json" with { type: "json" };
 import BN from "bn.js";
@@ -37,13 +38,12 @@ async function initializeLockSpl(
   }
   await provider.connect();
 
-  // AnchorProvider wrapper cho Phantom
   const anchorProvider = new AnchorProvider(connection, provider, {
     commitment: "confirmed",
   });
 
   const programId = new PublicKey("DJoq887gWARUoPt8fuQikwDYe1f8jTbJ3PmWrxZ9fj2Y");
-  const program = new Program(idl, programId, anchorProvider);
+  const program = new Program(idl, anchorProvider);
 
   const amountBN = new BN(amount);
   const unlockTimestampBN = new BN(unlockTimestamp);
@@ -54,27 +54,76 @@ async function initializeLockSpl(
   const mint = new PublicKey(mintAddress);
   const beneficiary = new PublicKey(beneficiaryAddress);
 
-  // Tính toán ATA
-  const payerAta = getAssociatedTokenAddressSync(mint, wallet);
-  const lockAta = getAssociatedTokenAddressSync(mint, lockAccountPDA, true);
+  // --- Tính toán ATA ---
+  const payerAta = getAssociatedTokenAddressSync(
+    mint,
+    wallet,
+    false,
+    TOKEN_PROGRAM_ID,
+    ASSOCIATED_TOKEN_PROGRAM_ID
+  );
 
-  // Gọi RPC
+  const lockAta = getAssociatedTokenAddressSync(
+    mint,
+    lockAccountPDA,
+    true,
+    TOKEN_PROGRAM_ID,
+    ASSOCIATED_TOKEN_PROGRAM_ID
+  );
+
+  // --- Check + tạo ATA nếu chưa tồn tại ---
+  const ix = [];
+  const payerAtaInfo = await connection.getAccountInfo(payerAta);
+  if (!payerAtaInfo) {
+    ix.push(
+      createAssociatedTokenAccountInstruction(
+        wallet,       // payer chịu phí
+        payerAta,     // ata
+        wallet,       // owner
+        mint,
+        TOKEN_PROGRAM_ID,
+        ASSOCIATED_TOKEN_PROGRAM_ID
+      )
+    );
+  }
+
+  const lockAtaInfo = await connection.getAccountInfo(lockAta);
+  if (!lockAtaInfo) {
+    ix.push(
+      createAssociatedTokenAccountInstruction(
+        wallet,         // payer chịu phí
+        lockAta,        // ata
+        lockAccountPDA, // owner = PDA
+        mint,
+        TOKEN_PROGRAM_ID,
+        ASSOCIATED_TOKEN_PROGRAM_ID
+      )
+    );
+  }
+
+  // Nếu cần tạo ATA → gửi tx tạo trước
+  if (ix.length > 0) {
+    const txAta = new Transaction().add(...ix);
+    await anchorProvider.sendAndConfirm(txAta);
+  }
+
+  // --- Gọi RPC ---
   const tx = await program.methods
-    .initializeLockSpl(amountBN, unlockTimestampBN, description)
-    .accounts({
-      payer: wallet,
-      lock_account: lockAccountPDA,
-      beneficiary,
-      payer_ata: payerAta,
-      lock_ata: lockAta,
-      mint,
-      token_program: TOKEN_PROGRAM_ID,
-      associated_token_program: ASSOCIATED_TOKEN_PROGRAM_ID,
-      system_program: SystemProgram.programId,
-    })
-    .rpc();
+  .initializeLockSpl(amountBN, unlockTimestampBN, description)
+  .accounts({
+    payer: wallet,
+    lockAccount: lockAccountPDA,
+    beneficiary,
+    payerAta,
+    lockAta,
+    mint,
+    tokenProgram: TOKEN_PROGRAM_ID,
+    associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+    systemProgram: SystemProgram.programId,
+  })
+  .preInstructions(ix)
+  .rpc();
 
   return tx;
 }
-
 export default initializeLockSpl;

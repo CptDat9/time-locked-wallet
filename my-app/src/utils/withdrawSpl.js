@@ -1,21 +1,26 @@
-import { Connection, PublicKey, SystemProgram } from "@solana/web3.js";
+import {
+  Connection,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 import { Program, AnchorProvider } from "@coral-xyz/anchor";
 import {
-  ASSOCIATED_TOKEN_PROGRAM_ID,
   TOKEN_PROGRAM_ID,
+  ASSOCIATED_TOKEN_PROGRAM_ID,
   getAssociatedTokenAddressSync,
+  createAssociatedTokenAccountInstruction,
 } from "@solana/spl-token";
-import BN from "bn.js";
 import idl from "../idl/time_locked_wallet.json" with { type: "json" };
-import  { Buffer } from "buffer";
+import BN from "bn.js";
+import { Buffer } from "buffer";
 
-// Hàm lấy PDA cho lock_account
-function getLockAccountPDA(owner, unlockTimestamp, programId) {
+function getLockAccountPDAForWithdraw(beneficiary, unlockTimestamp, programId) {
   const unlockTimestampBN = new BN(unlockTimestamp);
   const [pda] = PublicKey.findProgramAddressSync(
     [
-      Buffer.from("vault"), // seed b"vault"
-      owner.toBuffer(),
+      Buffer.from("vault"),
+      new PublicKey(beneficiary).toBuffer(),
       unlockTimestampBN.toArrayLike(Buffer, "le", 8),
     ],
     programId
@@ -23,57 +28,106 @@ function getLockAccountPDA(owner, unlockTimestamp, programId) {
   return pda;
 }
 
-async function withdrawSpl(lockAccountOwner, unlockTimestamp, beneficiaryAddress, mintAddress) {
+async function withdrawSpl(unlockTimestamp, beneficiaryAddress, mintAddress) {
   try {
-    // Kết nối tới Devnet
     const connection = new Connection("https://api.devnet.solana.com", "confirmed");
-
-    // Phantom provider
     const provider = window.solana;
     if (!provider || !provider.isPhantom) {
-      throw new Error("Phantom Wallet chưa được cài đặt.");
+      throw new Error("Cần cài đặt Phantom Wallet.");
     }
-    if (!provider.publicKey) {
-      throw new Error("Bạn chưa connect Phantom Wallet.");
-    }
+    await provider.connect();
 
-    // Tạo AnchorProvider
     const wallet = {
       publicKey: provider.publicKey,
       signTransaction: provider.signTransaction,
       signAllTransactions: provider.signAllTransactions,
     };
-    const anchorProvider = new AnchorProvider(connection, wallet, { commitment: "confirmed" });
 
-    // Program
+    // signer phải chính là beneficiary
+    if (wallet.publicKey.toBase58() !== beneficiaryAddress) {
+      throw new Error("Ví hiện tại không phải beneficiary, không thể rút SPL");
+    }
+
+    const anchorProvider = new AnchorProvider(connection, wallet, {
+      commitment: "confirmed",
+    });
     const programId = new PublicKey("DJoq887gWARUoPt8fuQikwDYe1f8jTbJ3PmWrxZ9fj2Y");
     const program = new Program(idl, anchorProvider);
 
     // PDA lock_account
-    const lockAccountPDA = getLockAccountPDA(new PublicKey(lockAccountOwner), unlockTimestamp, programId);
+    const lockAccountPDA = getLockAccountPDAForWithdraw(
+      beneficiaryAddress,
+      unlockTimestamp,
+      programId
+    );
 
-    // Mint + beneficiary
-    const mint = new PublicKey(mintAddress);
+    // fetch để debug
+    const lockAccount = await program.account.lockAccount.fetch(lockAccountPDA);
+    console.log("LockAccount fetched:", {
+      owner: lockAccount.owner.toBase58(),
+      beneficiary: lockAccount.beneficiary.toBase58(),
+      unlockTimestamp: lockAccount.unlockTimestamp.toString(),
+      amount: lockAccount.amount.toString(),
+      withdrawn: lockAccount.withdrawn,
+    });
+
     const beneficiary = new PublicKey(beneficiaryAddress);
+    const mint = new PublicKey(mintAddress);
 
-    // ATA
-    const beneficiaryAta = getAssociatedTokenAddressSync(mint, beneficiary);
-    const lockAta = getAssociatedTokenAddressSync(mint, lockAccountPDA, true);
+    // --- Tính toán ATA ---
+    const beneficiaryAta = getAssociatedTokenAddressSync(
+      mint,
+      beneficiary,
+      false,
+      TOKEN_PROGRAM_ID,
+      ASSOCIATED_TOKEN_PROGRAM_ID
+    );
 
-    // Gọi hàm withdraw
+    const lockAta = getAssociatedTokenAddressSync(
+      mint,
+      lockAccountPDA,
+      true,
+      TOKEN_PROGRAM_ID,
+      ASSOCIATED_TOKEN_PROGRAM_ID
+    );
+
+    // --- Check + tạo ATA nếu chưa tồn tại ---
+    const ix = [];
+    const beneficiaryAtaInfo = await connection.getAccountInfo(beneficiaryAta);
+    if (!beneficiaryAtaInfo) {
+      ix.push(
+        createAssociatedTokenAccountInstruction(
+          wallet.publicKey, // payer chịu phí
+          beneficiaryAta,
+          beneficiary,
+          mint,
+          TOKEN_PROGRAM_ID,
+          ASSOCIATED_TOKEN_PROGRAM_ID
+        )
+      );
+    }
+
+    // lockAta phải tồn tại từ initializeLockSpl, nhưng check luôn
+    const lockAtaInfo = await connection.getAccountInfo(lockAta);
+    if (!lockAtaInfo) {
+      throw new Error("Lock ATA chưa tồn tại. Có thể chưa initializeLockSpl đúng.");
+    }
+
+    // --- Gọi RPC ---
     const tx = await program.methods
       .withdrawSpl()
       .accounts({
-        lock_account: lockAccountPDA,
+        lockAccount: lockAccountPDA,
         beneficiary,
         signer: wallet.publicKey,
-        beneficiary_ata: beneficiaryAta,
-        lock_ata: lockAta,
+        beneficiaryAta,
+        lockAta,
         mint,
-        token_program: TOKEN_PROGRAM_ID,
-        associated_token_program: ASSOCIATED_TOKEN_PROGRAM_ID,
-        system_program: SystemProgram.programId,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
       })
+      .preInstructions(ix) // tạo beneficiary ATA nếu cần
       .rpc();
 
     console.log("Rút SPL thành công! Tx ID:", tx);

@@ -190,7 +190,7 @@
               },
               {
                 "kind": "account",
-                "path": "lock_account.owner",
+                "path": "lock_account.beneficiary",
                 "account": "LockAccount"
               },
               {
