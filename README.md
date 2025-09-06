@@ -89,10 +89,13 @@ README.md -> Setup & usage instructions
 
 - Wallets: Phantom integration
 
-### Clone Repo  
+### How to run this Dapp  
 ```bash
 git clone https://github.com/CptDat9/time-locked-wallet.git
 cd time-locked-wallet
+cd my-app
+npm install
+npm run dev
 ```
 ### 👤 Author
 - Doan Dat (@CptDat9)
