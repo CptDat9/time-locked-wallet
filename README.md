@@ -99,24 +99,25 @@ cd time-locked-wallet
  - Optional: video walkthrough (coming soon)
 
 ### Preview
-- Login Page:
+### - Login Page:
 <img width="1644" height="904" alt="image" src="https://github.com/user-attachments/assets/952f9f10-d2a5-4885-962a-8f8c1bf6ea44" />
 
-- User Page:
+### - User Page:
 
 <img width="1497" height="895" alt="image" src="https://github.com/user-attachments/assets/2e3daf91-d609-4f0d-8b52-45971c261c55" />
 
+### - Create locked funds
+
 <img width="407" height="453" alt="image" src="https://github.com/user-attachments/assets/57ad5daa-2d66-4c71-82b7-b6871f772fb7" />
 
-<img width="498" height="398" alt="image" src="https://github.com/user-attachments/assets/2f9afeb8-5bf8-4242-84bb-f5ff37f49463" />
 
-<img width="416" height="447" alt="image" src="https://github.com/user-attachments/assets/9b5f8c2d-d621-45de-affd-828fa1fe5fdb" />
+### - Withdraw
 
 ![alt text](image-6.png)
 
 ![alt text](image-7.png)
 
-- Test:
+### - Test:
 
 <img width="1042" height="231" alt="image" src="https://github.com/user-attachments/assets/36170fce-fde7-4270-a127-3e804c25e436" />
 ![alt text](image-2.png)
