@@ -1,6 +1,6 @@
 # ⏳ Time-Locked Wallet on Solana  
 
-## Demo video: https://youtu.be/xnE9Rl3lVkY
+## Demo video: https://youtu.be/xnE9Rl3lVkY?si=iTtAxQ65vbfR5cy5
 
 A **trustless, on-chain time-locked wallet** built with **Anchor, SPL Token, PDAs**, and a modern React frontend.  
 
