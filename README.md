@@ -1,5 +1,7 @@
 # ⏳ Time-Locked Wallet on Solana  
 
+## Demo video: https://youtu.be/xnE9Rl3lVkY
+
 A **trustless, on-chain time-locked wallet** built with **Anchor, SPL Token, PDAs**, and a modern React frontend.  
 
 This project allows users to **lock SOL or SPL tokens (e.g., USDC)** with:  
