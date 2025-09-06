@@ -104,7 +104,7 @@ cd time-locked-wallet
 
 ### - User Page:
 
-<img width="1497" height="895" alt="image" src="https://github.com/user-attachments/assets/2e3daf91-d609-4f0d-8b52-45971c261c55" />
+<img width="1565" height="918" alt="image" src="https://github.com/user-attachments/assets/05c9e974-0554-4aba-8da1-1e7b97def2bd" />
 
 ### - Create locked funds
 
