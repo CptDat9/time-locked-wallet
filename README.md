@@ -99,6 +99,7 @@ npm run dev
 ```
 ### 👤 Author
 - Doan Dat (@CptDat9)
+- Discord: datt9355
 ### 📌 Demo
  - Deployed on Solana Devnet
  - Optional: video walkthrough (coming soon)
